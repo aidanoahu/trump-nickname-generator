@@ -8,32 +8,32 @@
   <style>
     body {
       font-family: 'Bebas Neue', sans-serif;
-      background: linear-gradient(to bottom, #ffffff, #f1f1f1), url('https://upload.wikimedia.org/wikipedia/commons/5/5c/US_flag_large_34_stars.png');
+      background: linear-gradient(120deg, #fff, #f7f7f7), url('https://upload.wikimedia.org/wikipedia/commons/5/5c/US_flag_large_34_stars.png');
       background-size: cover;
       background-blend-mode: lighten;
       text-align: center;
-      padding: 60px 20px;
+      padding: 50px 20px;
       color: #b22234;
     }
 
     h1 {
-      font-size: 48px;
+      font-size: 56px;
+      margin-bottom: 10px;
       color: #b22234;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px #ffffff;
+      text-shadow: 3px 3px #ffffff;
     }
 
     h2 {
-      font-size: 24px;
-      margin-bottom: 40px;
+      font-size: 26px;
       color: #0a3161;
+      margin-bottom: 40px;
     }
 
     input {
       padding: 12px;
       font-size: 18px;
       width: 260px;
-      border: 2px solid #b22234;
+      border: 2px solid #0a3161;
       border-radius: 4px;
     }
 
@@ -55,63 +55,107 @@
 
     #nickname {
       margin-top: 40px;
-      font-size: 36px;
+      font-size: 42px;
       font-weight: bold;
       color: #0a3161;
       background-color: white;
       display: inline-block;
       padding: 20px 30px;
-      border: 3px solid #0a3161;
-      border-radius: 10px;
-      box-shadow: 5px 5px 0 #b22234;
+      border: 4px solid #0a3161;
+      border-radius: 12px;
+      box-shadow: 6px 6px 0 #b22234;
       text-transform: uppercase;
+      animation: bounce 0.5s ease;
+    }
+
+    @keyframes bounce {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.1); }
+      100% { transform: scale(1); }
     }
   </style>
 </head>
 <body>
-  <h1>🔥 Trump 2024 🔥</h1>
-  <h2>Make Nicknames Great Again 🇺🇸</h2>
+  <h1>🇺🇸 TRUMP 2024 🇺🇸</h1>
+  <h2>Make Nicknames Great Again</h2>
+
   <input type="text" id="nameInput" placeholder="Enter a name..." />
   <button onclick="generateNickname()">Generate</button>
   <div id="nickname"></div>
 
-  <!-- Trump Sound Bites -->
+  <!-- Sound bites -->
   <audio id="trumpSound1" src="https://www.myinstants.com/media/sounds/trump_wrong.mp3"></audio>
   <audio id="trumpSound2" src="https://www.myinstants.com/media/sounds/fake-news.mp3"></audio>
   <audio id="trumpSound3" src="https://www.myinstants.com/media/sounds/make-america-great-again.mp3"></audio>
   <audio id="trumpSound4" src="https://www.myinstants.com/media/sounds/yourefired.mp3"></audio>
 
   <script>
-    const adjectives = [
-      "Sleepy", "Lyin'", "Crooked", "Crazy", "Low Energy", "Sloppy",
-      "Mini", "Little", "Wacky", "Dopey", "Nervous", "Shifty",
-      "Pencil Neck", "Sneaky", "Leakin'", "Phony", "Loser", "Failing"
-    ];
+    const adjectives = {
+      A: ["Angry", "Awful", "Arrogant"],
+      B: ["Boring", "Bumbling", "Big Mouth"],
+      C: ["Crooked", "Crazy", "Clueless"],
+      D: ["Dopey", "Dishonest", "Disgraceful"],
+      E: ["Evil", "Embarrassing"],
+      F: ["Fake", "Failing", "Flaky"],
+      G: ["Goofy", "Grumpy"],
+      H: ["Heartless", "Hopeless"],
+      I: ["Ignorant", "Incompetent"],
+      J: ["Jittery", "Jealous"],
+      K: ["Kooky", "Know-Nothing"],
+      L: ["Lyin'", "Lazy", "Low Energy"],
+      M: ["Mini", "Mean", "Miserable"],
+      N: ["Nasty", "Nutty", "No-Talent"],
+      O: ["Out of Touch", "Overrated"],
+      P: ["Phony", "Pathetic", "Puppet"],
+      Q: ["Questionable"],
+      R: ["Ridiculous", "Raging", "Reckless"],
+      S: ["Sleepy", "Slippery", "Sneaky"],
+      T: ["Tiny", "Two-Faced"],
+      U: ["Unstable", "Unfit"],
+      V: ["Vicious", "Vanilla"],
+      W: ["Wacky", "Weak", "Washed-up"],
+      X: ["Xtra Fake"], // joke entry
+      Y: ["Yappy", "Yawning"],
+      Z: ["Zero-Energy", "Zombie"]
+    };
 
-    const sounds = [
-      "trumpSound1", "trumpSound2", "trumpSound3", "trumpSound4"
-    ];
+    const sounds = ["trumpSound1", "trumpSound2", "trumpSound3", "trumpSound4"];
 
-    function capitalize(name) {
-      return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     }
 
     function playRandomSound() {
-      const randomId = sounds[Math.floor(Math.random() * sounds.length)];
-      const audio = document.getElementById(randomId);
+      const sound = sounds[Math.floor(Math.random() * sounds.length)];
+      const audio = document.getElementById(sound);
       audio.currentTime = 0;
       audio.play();
     }
 
     function generateNickname() {
-      const name = document.getElementById("nameInput").value.trim();
-      if (!name) {
+      const nameInput = document.getElementById("nameInput").value.trim();
+      if (!nameInput) {
         document.getElementById("nickname").innerText = "Enter a name, patriot!";
         return;
       }
-      const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-      const nickname = `${adjective} ${capitalize(name)}`;
+
+      const firstLetter = nameInput.charAt(0).toUpperCase();
+      const wordList = adjectives[firstLetter] || [];
+
+      let adjective;
+      if (wordList.length > 0) {
+        adjective = wordList[Math.floor(Math.random() * wordList.length)];
+      } else {
+        // fallback: random from any letter
+        const allAdjectives = Object.values(adjectives).flat();
+        adjective = allAdjectives[Math.floor(Math.random() * allAdjectives.length)];
+      }
+
+      const nickname = `${adjective} ${capitalize(nameInput)}`;
       document.getElementById("nickname").innerText = nickname;
+      document.getElementById("nickname").style.animation = 'none';
+      void document.getElementById("nickname").offsetWidth; // reset animation
+      document.getElementById("nickname").style.animation = 'bounce 0.5s ease';
       playRandomSound();
     }
   </script>
